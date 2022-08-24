@@ -1,0 +1,45 @@
+<apex:page showHeader="false" sidebar="false">
+    <!--<site:googleAnalyticsTracking /> -->
+    <apex:includeLightning />    
+    <html>
+        <head>
+            <!-- Google tag (gtag.js) -->
+            <script src="https://www.googletagmanager.com/gtag/js?id=G-Q2JXT1CC47"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-Q2JXT1CC47',{ cookie_flags: 'max-age=7200;secure;samesite=none' }); //*** PRIMARY ***
+            console.log('gtag created');
+            </script>
+            <script>
+            document.addEventListener("sendgtag", function(event){
+                console.log('vf event data window listener => ', event.detail);
+                if(event.detail.gTagEventName == 'search_btn_click') {
+                    gtag('event',event.detail.gTagEventName);
+                }
+                else {
+                    gtag('event',event.detail.gTagEventName,{'field_api_name': event.detail.field });
+                }
+            });
+            </script>
+            <title>Country Carrier Information</title>
+        </head>
+        <body>
+            <div id="LightningComponentid" />   
+            <!-- the Id of div tag which will be used to render your LWC component  -->
+            <script>
+            $Lightning.use("c:SN_NewCountryCarrierAPP", function() {
+                $Lightning.createComponent("c:sN_NewCountryCarrier",
+                                           { 
+                                               SFDCobjectApiName:'Country_Carrier__c',
+                                               fieldSetName:'CountryCarrierFS'
+                                           },
+                                           "LightningComponentid", // the Id of div tag where your component will be rendered
+                                           function(cmp) {
+                                               console.log('Calling the LWC Component');
+                                           });
+            });
+            </script>
+        </body></html>
+</apex:page>
